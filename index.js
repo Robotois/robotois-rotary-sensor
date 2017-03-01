@@ -1,67 +1,75 @@
-var rSensor = require('bindings')('RotarySensor');
-var EventEmitter = require('events').EventEmitter;
-var inherits = require('util').inherits;
+const RSensor = require('bindings')('RotarySensor');
+const EventEmitter = require('events').EventEmitter;
+const inherits = require('util').inherits;
 
-function RotarySensor(_port,_add = 0){
+/**
+ * Creates an instance of temperature.
+ * @param {int} port The port number where this component us connected.
+ * @param {int} add The second argument.
+ * @returns {int} The sum of the two numbers.
+ */
+function RotarySensor(port, add = 0) {
+  const self = this;
   EventEmitter.call(this);
-  var _self = this;
 
-  this.rotary = new rSensor(_port,_add);
+  this.rotary = new RSensor(port, add);
 
-  process.on('SIGINT', function () {
-    _self.rotary.release();
+  process.on('SIGINT', () => {
+    self.rotary.release();
   });
 
-  process.on('SIGTERM', function () {
-    _self.rotary.release();
+  process.on('SIGTERM', () => {
+    self.rotary.release();
   });
 }
 
-RotarySensor.prototype.getValue = function(){
+RotarySensor.prototype.getValue = function getValue() {
   return this.rotary.getValue();
 };
 
-RotarySensor.prototype.getBasicValue = function(){
-  var value = Math.round(this.rotary.getValue() * 100)/100;
+RotarySensor.prototype.getBasicValue = function getBasicValue() {
+  const value = Math.round(this.rotary.getValue() * 100) / 100;
   return value;
 };
 
-RotarySensor.prototype.getScaledValue = function (){
+RotarySensor.prototype.getScaledValue = function getScaledValue() {
   return this.rotary.getScaledValue();
 };
 
-RotarySensor.prototype.getBasicScaledValue = function (){
+RotarySensor.prototype.getBasicScaledValue = function getBasicScaledValue() {
   return this.rotary.getBasicScaledValue();
 };
 
-RotarySensor.prototype.enableEvents = function () {
-  var _self = this;
-  var scaledValue;
-  if(!this.eventInterval){
-    this.eventInterval = setInterval(()=>{
+RotarySensor.prototype.enableEvents = function enableEvents() {
+  const self = this;
+  let scaledValue;
+  if (!this.eventInterval) {
+    this.eventInterval = setInterval(() => {
       scaledValue = this.rotary.getBasicScaledValue();
-      _self.emit('medicion',scaledValue);
+      self.emit('medicion', scaledValue);
     }, 100); // Tomar mediciones cada 100ms
   }
-}
+};
 
-RotarySensor.prototype.when = function(value, callback) {
+RotarySensor.prototype.when = function when(value, callback) {
   if (!this.interval) {
-    this.interval = setInterval(()=>{
-      console.log('Rotatorio: ' + this.rotary.getBasicScaledValue());
+    this.interval = setInterval(() => {
+      /* eslint-disable no-console */
+      console.log(`Rotatorio: ${this.rotary.getBasicScaledValue()}`);
+      /* eslint-disable eqeqeq */
       if (this.rotary.getBasicScaledValue() == value) {
         callback();
       }
     }, 100); // Tomar mediciones cada 100ms
   }
-}
+};
 
-RotarySensor.prototype.release = function (){
+RotarySensor.prototype.release = function release() {
   clearInterval(this.eventInterval);
   clearInterval(this.interval);
   this.rotary.release();
-}
+};
 
-inherits(RotarySensor,EventEmitter);
+inherits(RotarySensor, EventEmitter);
 
 module.exports = RotarySensor;
