@@ -6,7 +6,7 @@ const inherits = require('util').inherits;
  * Creates an instance of RotarySensor.
  * @param {int} port The port number where this component us connected.
  * @param {int} add The second argument.
- * @returns {RotarySensor}.
+ * @returns {RotarySensor} RotarySensor object.
  */
 function RotarySensor(port, add = 0) {
   const self = this;
