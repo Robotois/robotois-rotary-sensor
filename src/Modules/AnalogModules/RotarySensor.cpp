@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   RotarySensor.cpp
  * Author: yova
- * 
+ *
  * Created on 26 de mayo de 2016, 04:10 PM
  */
 
@@ -70,7 +70,7 @@ int16_t RotarySensor::getBasicScaledValue(){
 }
 
 void RotarySensor::release(){
-    printf("[RotarySensor] => Released\n");
-    analogModule->release();
+    // analogModule->release();
     delete analogModule;
+    printf("[RotarySensor] => Released\n");
 }

@@ -1,23 +1,18 @@
-var _rotary = require('../index'),
-  rotary = new _rotary(2);
+const RotarySensor = require('../index');
 
-rotary.when(5,()=>{
-  console.log("Wow, la posicion es 5!!");
+const rotary = new RotarySensor(2);
+
+rotary.when(5, () => {
+  /* eslint-disable no-console */
+  console.log('Wow, la posicion es 5!!');
 });
 
-// setInterval(()=>{ // Proceso en estado ocioso
-//   console.log("Temp: " + temp.getValue().toFixed(3));
-//   console.log("Int: " + temp.getIntValue());
-// },1000);
+setInterval(() => {}, 10000);
 
-setInterval(()=>{ // Proceso en estado ocioso
-  true;
-},10000);
-
-process.on('SIGTERM', function () {
+process.on('SIGTERM', () => {
   process.exit();
 });
 
-process.on('SIGINT', function () {
+process.on('SIGINT', () => {
   process.exit();
 });

@@ -1,19 +1,20 @@
-var _rotary = require('../index'),
-  rotary = new _rotary(2);
+const RotarySensor = require('../index');
+
+const rotary = new RotarySensor(2);
+
 rotary.enableEvents();
 
-rotary.on('medicion',function(value){
-  console.log("Posicion: "+value);
+rotary.on('medicion', (value) => {
+  /* eslint-disable no-console */
+  console.log(`Posicion: ${value}`);
 });
 
-setInterval(()=>{ // Proceso en estado ocioso
-  true;
-},10000);
+setInterval(() => {}, 10000);
 
-process.on('SIGTERM', function () {
+process.on('SIGTERM', () => {
   process.exit();
 });
 
-process.on('SIGINT', function () {
+process.on('SIGINT', () => {
   process.exit();
 });
