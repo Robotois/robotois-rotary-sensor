@@ -3,7 +3,7 @@
 
 #include <node.h>
 #include <node_object_wrap.h>
-#include "src/Modules/AnalogModules/RotarySensor.h"
+#include "../Modules/AnalogModules/RotarySensor.h"
 
 class RotaryWrapper : public node::ObjectWrap {
 public:
@@ -16,9 +16,8 @@ private:
 
   static void New(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void getValue(const v8::FunctionCallbackInfo<v8::Value>& args);
-  // static void getBasicValue(const v8::FunctionCallbackInfo<v8::Value>& args);
+  static void getBasicValue(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void getScaledValue(const v8::FunctionCallbackInfo<v8::Value>& args);
-  static void getBasicScaledValue(const v8::FunctionCallbackInfo<v8::Value>& args);
 
   static void release(const v8::FunctionCallbackInfo<v8::Value>& args);
 

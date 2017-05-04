@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   RotarySensor.h
  * Author: yova
  *
@@ -15,20 +15,18 @@ public:
     RotarySensor(uint8_t _addr = 0x00);
     RotarySensor(const RotarySensor& orig);
     virtual ~RotarySensor();
-    
+
     void selectPort(uint8_t _port);
     float getValue();
-//    float getBasicValue();
-    int16_t getScaledValue();    
-    int16_t getBasicScaledValue();    
-    
+    float getBasicValue();
+    int16_t getScaledValue();
+
     void release();
 private:
     ADS1015 *analogModule;
     uint8_t inputPort;
-    float scaleFactor, basicScaleFactor;
+    float scaleFactor;
 
 };
 
 #endif	/* ROTARYMODULE_H */
-

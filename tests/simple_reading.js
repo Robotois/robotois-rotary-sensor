@@ -2,14 +2,12 @@ const RotarySensor = require('../index');
 
 const rotary = new RotarySensor(2);
 
-setInterval(() => { // Proceso en estado ocioso
+setInterval(() => {
   /* eslint-disable no-console */
-  console.log(`BasicValue: ${rotary.getBasicValue()}`);
-  /* eslint-disable no-console */
-  console.log(`BasicScaledValue: ${rotary.getBasicScaledValue()}`);
-}, 100);
-
-setInterval(() => {}, 10000);
+  // console.log(`Value: ${rotary.getValue().toFixed(3)}`);
+  // console.log(`BasicValue: ${rotary.getBasicValue().toFixed(3)}`);
+  console.log(`ScaledValue: ${rotary.getScaledValue()}`);
+}, 250);
 
 process.on('SIGTERM', () => {
   process.exit();

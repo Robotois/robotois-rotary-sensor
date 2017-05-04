@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "RotarySensor",
-      "sources": [ "RotarySensor.cpp","RotaryWrapper.cpp",
+      "sources": [ "src/Wrapper/RotarySensor.cpp","src/Wrapper/RotaryWrapper.cpp",
       "src/Modules/AnalogModules/RotarySensor.cpp",
       "src/Libraries/ADS1015/ADS1015.cpp",
       "src/Libraries/Timer/AccurateTiming.cpp"

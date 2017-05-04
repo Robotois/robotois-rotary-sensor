@@ -13,9 +13,7 @@
 
 RotarySensor::RotarySensor(uint8_t _addr) {
     analogModule = new ADS1015(_addr);
-//    scaleFactor = 1024.0f/2048.0f;
-    scaleFactor = 1024.0f/1700.0f; // - usin a gain of ADS1015_6144_GAIN, 1700.0 => 5.1v
-    basicScaleFactor = 10.0f/1700.0f; // - usin a gain of ADS1015_6144_GAIN, 1700.0 => 5.1v
+    scaleFactor = 10.0f/1700.0f; // - usin a gain of ADS1015_6144_GAIN, 1700.0 => 5.1v
 }
 
 RotarySensor::RotarySensor(const RotarySensor& orig) {
@@ -47,26 +45,18 @@ void RotarySensor::selectPort(uint8_t _port){
 
 float RotarySensor::getValue(){
     selectPort(inputPort);
-    float reading = analogModule->readInput();
-    return reading;
+    return analogModule->readInput();
 }
 
-//float RotarySensor::getBasicValue(){
-//    selectPort(inputPort);
-//    float reading = std::round(analogModule->readInput() * 100.0f)/100.0f;
-//    return reading;
-//}
+float RotarySensor::getBasicValue(){
+   selectPort(inputPort);
+   return analogModule->readRawInput() * scaleFactor;
+}
 
 int16_t RotarySensor::getScaledValue(){
     selectPort(inputPort);
-    int16_t input = analogModule->readRawInput();
-    return (int16_t)(std::round(input * scaleFactor));
-}
-
-int16_t RotarySensor::getBasicScaledValue(){
-    selectPort(inputPort);
-    int16_t input = analogModule->readRawInput();
-    return (int16_t)(std::round(input * basicScaleFactor));
+    int16_t input = (int16_t)( std::round( getBasicValue() ) );
+    return input;
 }
 
 void RotarySensor::release(){

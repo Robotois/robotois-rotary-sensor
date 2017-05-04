@@ -9,8 +9,6 @@ rotary.on('medicion', (value) => {
   console.log(`Posicion: ${value}`);
 });
 
-setInterval(() => {}, 10000);
-
 process.on('SIGTERM', () => {
   process.exit();
 });

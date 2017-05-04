@@ -7,8 +7,6 @@ rotary.when(5, () => {
   console.log('Wow, la posicion es 5!!');
 });
 
-setInterval(() => {}, 10000);
-
 process.on('SIGTERM', () => {
   process.exit();
 });

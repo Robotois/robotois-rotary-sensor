@@ -28,45 +28,35 @@ RotarySensor.prototype.getValue = function getValue() {
 };
 
 RotarySensor.prototype.getBasicValue = function getBasicValue() {
-  const value = Math.round(this.rotary.getValue() * 100) / 100;
-  return value;
+  return this.rotary.getBasicValue();
 };
 
 RotarySensor.prototype.getScaledValue = function getScaledValue() {
   return this.rotary.getScaledValue();
 };
 
-RotarySensor.prototype.getBasicScaledValue = function getBasicScaledValue() {
-  return this.rotary.getBasicScaledValue();
-};
-
 RotarySensor.prototype.enableEvents = function enableEvents() {
-  const self = this;
-  let scaledValue;
   if (!this.eventInterval) {
+    let scaledValue;
     this.eventInterval = setInterval(() => {
-      scaledValue = this.rotary.getBasicScaledValue();
-      self.emit('medicion', scaledValue);
-    }, 100); // Tomar mediciones cada 100ms
+      scaledValue = this.rotary.getScaledValue();
+      this.emit('medicion', scaledValue);
+    }, 250); // Tomar mediciones cada 100ms
   }
 };
 
 RotarySensor.prototype.when = function when(value, callback) {
-  if (!this.interval) {
-    this.interval = setInterval(() => {
-      /* eslint-disable no-console */
-      console.log(`Rotatorio: ${this.rotary.getBasicScaledValue()}`);
-      /* eslint-disable eqeqeq */
-      if (this.rotary.getBasicScaledValue() == value) {
-        callback();
-      }
-    }, 100); // Tomar mediciones cada 100ms
-  }
+  this.enableEvents();
+  this.on('medicion', (rotaryValue) => {
+    console.log(`Posicion: ${rotaryValue}`);
+    if (value == rotaryValue) {
+      callback();
+    }
+  });
 };
 
 RotarySensor.prototype.release = function release() {
   clearInterval(this.eventInterval);
-  clearInterval(this.interval);
   this.rotary.release();
 };
 

@@ -8,11 +8,9 @@ Persistent<Function> RotaryWrapper::constructor;
 RotaryWrapper::RotaryWrapper(uint8_t _port, uint8_t _addr){
   rotarySensor = new RotarySensor(_addr);
   rotarySensor->selectPort(_port);
-  // printf("Here...\n");
 }
 
 RotaryWrapper::~RotaryWrapper(){
-  // delete rotarySensor;
 }
 
 void RotaryWrapper::release(const FunctionCallbackInfo<Value>& args){
@@ -33,9 +31,8 @@ void RotaryWrapper::Init(){
 
   // Prototype
   NODE_SET_PROTOTYPE_METHOD(tpl,"getValue",getValue);
-  // NODE_SET_PROTOTYPE_METHOD(tpl,"getBasicValue",getBasicValue);
+  NODE_SET_PROTOTYPE_METHOD(tpl,"getBasicValue",getBasicValue);
   NODE_SET_PROTOTYPE_METHOD(tpl,"getScaledValue",getScaledValue);
-  NODE_SET_PROTOTYPE_METHOD(tpl,"getBasicScaledValue",getBasicScaledValue);
   NODE_SET_PROTOTYPE_METHOD(tpl,"release",release);
 
   constructor.Reset(isolate,tpl->GetFunction());
@@ -91,7 +88,6 @@ void RotaryWrapper::NewInstance(const FunctionCallbackInfo<Value>& args) {
   HandleScope scope(isolate);
 
   uint8_t _argc = args.Length();
-  // printf("Args Count: %d\n",_argc);
   if(_argc > 2){
     isolate->ThrowException(Exception::TypeError(
     String::NewFromUtf8(isolate, "Wrong arguments...")));
@@ -115,14 +111,14 @@ void RotaryWrapper::getValue(const FunctionCallbackInfo<Value>& args){
   args.GetReturnValue().Set(Number::New(isolate,temp_obj->rotarySensor->getValue()));
 }
 
-// void RotaryWrapper::getBasicValue(const FunctionCallbackInfo<Value>& args){
-//   Isolate* isolate = Isolate::GetCurrent();
-//   HandleScope scope(isolate);
-//
-//   RotaryWrapper* temp_obj = ObjectWrap::Unwrap<RotaryWrapper>(args.Holder());
-//
-//   args.GetReturnValue().Set(Number::New(isolate,temp_obj->rotarySensor->getBasicValue()));
-// }
+void RotaryWrapper::getBasicValue(const FunctionCallbackInfo<Value>& args){
+  Isolate* isolate = Isolate::GetCurrent();
+  HandleScope scope(isolate);
+
+  RotaryWrapper* temp_obj = ObjectWrap::Unwrap<RotaryWrapper>(args.Holder());
+
+  args.GetReturnValue().Set(Number::New(isolate,temp_obj->rotarySensor->getBasicValue()));
+}
 
 void RotaryWrapper::getScaledValue(const FunctionCallbackInfo<Value>& args){
   Isolate* isolate = Isolate::GetCurrent();
@@ -132,18 +128,3 @@ void RotaryWrapper::getScaledValue(const FunctionCallbackInfo<Value>& args){
 
   args.GetReturnValue().Set(Number::New(isolate,temp_obj->rotarySensor->getScaledValue()));
 }
-
-void RotaryWrapper::getBasicScaledValue(const FunctionCallbackInfo<Value>& args){
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
-
-  RotaryWrapper* temp_obj = ObjectWrap::Unwrap<RotaryWrapper>(args.Holder());
-
-  args.GetReturnValue().Set(Number::New(isolate,temp_obj->rotarySensor->getBasicScaledValue()));
-}
-
-// void Temperature(){
-//   RotarySensor temp;
-//   temp.selectPort(3);
-//   printf("Temp Input: %0.2f\n",temp.getTemperature());
-// }
