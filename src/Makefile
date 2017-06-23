@@ -17,12 +17,12 @@ all: ads.o rotary.o timer.o main.o
 
 main.o: test.cpp
 	$(CC) $(COMPILE_FLAGS) test.cpp
-ads.o: Libraries/ADS1015/ADS1015.cpp Libraries/ADS1015/ADS1015.h
-	$(CC) $(COMPILE_FLAGS) Libraries/ADS1015/ADS1015.cpp
-timer.o: Libraries/Timer/AccurateTiming.cpp Libraries/Timer/AccurateTiming.h
-	$(CC) $(COMPILE_FLAGS) Libraries/Timer/AccurateTiming.cpp
-rotary.o: Modules/AnalogModules/RotarySensor.cpp Modules/AnalogModules/RotarySensor.h
-	$(CC) $(COMPILE_FLAGS) Modules/AnalogModules/RotarySensor.cpp
+ads.o: libraries/robotois-ADS1015/ADS1015.cpp libraries/robotois-ADS1015/ADS1015.h
+	$(CC) $(COMPILE_FLAGS) libraries/robotois-ADS1015/ADS1015.cpp
+timer.o: libraries/robotois-timer/AccurateTiming.cpp libraries/robotois-timer/AccurateTiming.h
+	$(CC) $(COMPILE_FLAGS) libraries/robotois-timer/AccurateTiming.cpp
+rotary.o: RotarySensor.cpp RotarySensor.h
+	$(CC) $(COMPILE_FLAGS) RotarySensor.cpp
 
 clean:
 	$(RM) $(OBJECTS) runner

@@ -37,22 +37,52 @@ RotarySensor.prototype.getScaledValue = function getScaledValue() {
 
 RotarySensor.prototype.enableEvents = function enableEvents() {
   if (!this.eventInterval) {
-    let scaledValue;
+    // let scaledValue;
     this.eventInterval = setInterval(() => {
-      scaledValue = this.rotary.getScaledValue();
-      this.emit('medicion', scaledValue);
-    }, 250); // Tomar mediciones cada 100ms
+      // scaledValue = this.rotary.getScaledValue();
+      this.emit('medicion', this.rotary.getScaledValue());
+    }, 250); // Tomar mediciones cada 333ms
   }
 };
 
-RotarySensor.prototype.when = function when(value, callback) {
-  this.enableEvents();
+RotarySensor.prototype.equals = function equals(value, onTrue, onFalse) {
   this.on('medicion', (rotaryValue) => {
-    console.log(`Posicion: ${rotaryValue}`);
-    if (value == rotaryValue) {
-      callback();
+    if (rotaryValue == value) {
+      onTrue(rotaryValue);
+    } else {
+      onFalse(rotaryValue);
     }
-  });
+  })
+};
+
+RotarySensor.prototype.lessThan = function lessThan(value, onTrue, onFalse) {
+  this.on('medicion', (rotaryValue) => {
+    if (rotaryValue < value) {
+      onTrue(rotaryValue);
+    } else {
+      onFalse(rotaryValue);
+    }
+  })
+};
+
+RotarySensor.prototype.moreThan = function moreThan(value, onTrue, onFalse) {
+  this.on('medicion', (rotaryValue) => {
+    if (rotaryValue > value) {
+      onTrue(rotaryValue);
+    } else {
+      onFalse(rotaryValue);
+    }
+  })
+};
+
+RotarySensor.prototype.between = function between(min, max, onTrue, onFalse) {
+  this.on('medicion', (rotaryValue) => {
+    if (rotaryValue >= min && rotaryValue <= max) {
+      onTrue(rotaryValue);
+    } else {
+      onFalse(rotaryValue);
+    }
+  })
 };
 
 RotarySensor.prototype.release = function release() {

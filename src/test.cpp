@@ -1,23 +1,23 @@
 #include <cstdio>
 #include <bcm2835.h>
 
-#include "./Libraries/ADS1015/ADS1015.h"
-#include "./Modules/AnalogModules/RotarySensor.h"
-#include "./Libraries/Timer/AccurateTiming.h"
+#include "./libraries/robotois-ADS1015/ADS1015.h"
+#include "./RotarySensor.h"
+#include "./libraries/robotois-timer/AccurateTiming.h"
 
 void i2c_init();
 void i2c_end();
 
 int main(int argc, char const *argv[]) {
   i2c_init();
+  RotarySensor rotary;
   while (true) {
-    RotarySensor rotary;
-    rotary.selectPort(2);
-    printf("getValue: %0.2f, getBasicValue: %0.2f, getScaledValue: %d\n",
+    rotary.selectPort(1);
+    printf("getValue: %f, getBasicValue: %0.2f, getScaledValue: %d\n",
       rotary.getValue(),
       rotary.getBasicValue(),
       rotary.getScaledValue());
-    mDelay(500);
+    mDelay(100);
   }
   i2c_end();
   return 0;
