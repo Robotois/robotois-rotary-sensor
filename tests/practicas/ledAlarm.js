@@ -5,18 +5,31 @@ const led = new LEDModule(5);
 const rotary = new Rotary(1);
 rotary.enableEvents();
 
+rotary.on('medicion', (rotaryValue) => {
+  switch (true) {
+    case (rotaryValue < 3):
+      led.turnOn();
+      break;
+    case (rotaryValue >= 5 && rotaryValue <= 7):
+      led.blink(true);
+      break;
+    default:
+      led.turnOff();
+  }
+});
+
 /*
 Practica con alarma de LED usando 'equals', en donde se enciende el LED cuando el sensor
 rotatorio devuelve un valor especifico
  */
-rotary.equals(5,
-  () => {
-    led.turnOn();
-  },
-  () => {
-    led.turnOff();
-  }
-);
+// rotary.equals(5,
+//   () => {
+//     led.turnOn();
+//   },
+//   () => {
+//     led.turnOff();
+//   }
+// );
 
 /*
 Practica con alarma de LED usando 'equals', en donde se hace parpadear el LED cuando el sensor

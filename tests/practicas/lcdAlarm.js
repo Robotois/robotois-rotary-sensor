@@ -5,13 +5,27 @@ const lcd = new LCDModule();
 const rotary = new Rotary(1);
 rotary.enableEvents();
 
+rotary.on('medicion', (rotaryValue) => {
+  lcd.displaySensor({ rotaryValue, text: 'Rotary:' });
+  switch (true) {
+    case (rotaryValue < 3):
+      lcd.setBacklight(false);
+      break;
+    case (rotaryValue >= 5 && rotaryValue <= 7):
+      lcd.blinkBacklight(true);
+      break;
+    default:
+      lcd.setBacklight(true);
+  }
+});
+
 /*
 Practica simple, donde solo se muestra el valor actual del sensor de temperatura
 en el display
  */
-rotary.on('medicion', (value) => {
-  lcd.displaySensor({ value, text: 'Rotary:' });
-});
+// rotary.on('medicion', (value) => {
+//   lcd.displaySensor({ value, text: 'Rotary:' });
+// });
 
 /*
 Practica con alarma en el LCD, en donde se muestra en el display el valor actual
