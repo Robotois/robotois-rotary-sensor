@@ -41,7 +41,7 @@ RotarySensor.prototype.enableEvents = function enableEvents() {
     this.eventInterval = setInterval(() => {
       // scaledValue = this.rotary.getScaledValue();
       this.emit('medicion', this.rotary.getScaledValue());
-    }, 250); // Tomar mediciones cada 333ms
+    }, 200);
   }
 };
 
