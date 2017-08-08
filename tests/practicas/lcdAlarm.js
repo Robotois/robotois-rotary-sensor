@@ -2,17 +2,19 @@ const Rotary = require('../../index');
 const LCDModule = require('robotois-lcd-display');
 
 const lcd = new LCDModule();
-const rotary = new Rotary(1);
+const rotary = new Rotary(2);
 rotary.enableEvents();
 
 rotary.on('medicion', (rotaryValue) => {
-  lcd.displaySensor({ rotaryValue, text: 'Rotary:' });
+  // lcd.displaySensor({ rotaryValue, text: 'Rotary:' });
+  lcd.message(`Rotary: ${rotaryValue}`);
+  console.log(`Rotary: ${rotaryValue}`);
   switch (true) {
     case (rotaryValue < 3):
       lcd.setBacklight(false);
       break;
     case (rotaryValue >= 5 && rotaryValue <= 7):
-      lcd.blinkBacklight(true);
+      lcd.blink(true);
       break;
     default:
       lcd.setBacklight(true);

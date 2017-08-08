@@ -37,9 +37,7 @@ RotarySensor.prototype.getScaledValue = function getScaledValue() {
 
 RotarySensor.prototype.enableEvents = function enableEvents() {
   if (!this.eventInterval) {
-    // let scaledValue;
     this.eventInterval = setInterval(() => {
-      // scaledValue = this.rotary.getScaledValue();
       this.emit('medicion', this.rotary.getScaledValue());
     }, 200);
   }
