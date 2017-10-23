@@ -1,6 +1,6 @@
 {
   "name": "robotois-rotary-sensor",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Node library to controls de rotary sensor module",
   "main": "index.js",
   "scripts": {
