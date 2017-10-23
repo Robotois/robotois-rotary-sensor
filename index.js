@@ -13,6 +13,7 @@ function RotarySensor(port, add = 0) {
   EventEmitter.call(this);
 
   this.rotary = new RSensor(port, add);
+  this.prevValue = -1;
 
   process.on('SIGINT', () => {
     self.rotary.release();
@@ -35,52 +36,26 @@ RotarySensor.prototype.getScaledValue = function getScaledValue() {
   return this.rotary.getScaledValue();
 };
 
-RotarySensor.prototype.enableEvents = function enableEvents() {
+RotarySensor.prototype.publishNow = function publishNow() {
+  this.mqttClient.publish(this.myTopic, this.rotary.getScaledValue().toString());
+};
+
+RotarySensor.prototype.enableEvents = function enableEvents(mqttConfig) {
+  if (mqttConfig) {
+    this.mqttClient = mqttConfig.mqttClient;
+    this.myTopic = `sensors/rotary${mqttConfig.instance}`;
+    this.mqttClient.publish('registerTopic', this.myTopic);
+  }
   if (!this.eventInterval) {
     this.eventInterval = setInterval(() => {
-      this.emit('medicion', this.rotary.getScaledValue());
-    }, 200);
+      const currentValue = this.rotary.getScaledValue();
+      this.emit('medicion', currentValue);
+      if (this.prevValue !== currentValue && this.mqttClient) {
+        this.mqttClient.publish(this.myTopic, currentValue.toString());
+        this.prevValue = currentValue;
+      }
+    }, 100);
   }
-};
-
-RotarySensor.prototype.equals = function equals(value, onTrue, onFalse) {
-  this.on('medicion', (rotaryValue) => {
-    if (rotaryValue == value) {
-      onTrue(rotaryValue);
-    } else {
-      onFalse(rotaryValue);
-    }
-  })
-};
-
-RotarySensor.prototype.lessThan = function lessThan(value, onTrue, onFalse) {
-  this.on('medicion', (rotaryValue) => {
-    if (rotaryValue < value) {
-      onTrue(rotaryValue);
-    } else {
-      onFalse(rotaryValue);
-    }
-  })
-};
-
-RotarySensor.prototype.moreThan = function moreThan(value, onTrue, onFalse) {
-  this.on('medicion', (rotaryValue) => {
-    if (rotaryValue > value) {
-      onTrue(rotaryValue);
-    } else {
-      onFalse(rotaryValue);
-    }
-  })
-};
-
-RotarySensor.prototype.between = function between(min, max, onTrue, onFalse) {
-  this.on('medicion', (rotaryValue) => {
-    if (rotaryValue >= min && rotaryValue <= max) {
-      onTrue(rotaryValue);
-    } else {
-      onFalse(rotaryValue);
-    }
-  })
 };
 
 RotarySensor.prototype.release = function release() {
