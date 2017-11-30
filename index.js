@@ -44,7 +44,6 @@ RotarySensor.prototype.enableEvents = function enableEvents(mqttConfig) {
   if (mqttConfig) {
     this.mqttClient = mqttConfig.mqttClient;
     this.myTopic = `sensors/rotary${mqttConfig.instance}`;
-    this.mqttClient.publish('registerTopic', this.myTopic);
   }
   if (!this.eventInterval) {
     this.eventInterval = setInterval(() => {
