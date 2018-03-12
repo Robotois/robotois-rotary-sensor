@@ -45,7 +45,9 @@ void RotarySensor::selectPort(uint8_t _port){
 
 float RotarySensor::getValue(){
     selectPort(inputPort);
-    return analogModule->readInput();
+    float reading = analogModule->readInput();
+    // printf("RotarySensor voltage: %0.3f\n", reading);
+    return reading;
 }
 
 float RotarySensor::getBasicValue(){
